@@ -5,7 +5,7 @@ const app = express();
 //getting information about some particular record
 app.get('/', (req, res) => {
   //arrow function gets called everytime the specific route is visited
-  res.send({ hi: 'Hello World' });
+  res.send({ init: 'Hello World' });
 });
 
 // '/' which route to listen to  eg: '/Home'
