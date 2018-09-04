@@ -13,8 +13,7 @@ passport.use(
       callbackURL: '/auth/google/callback'
     },
     (accesToken, refreshToken, profile, done) => {
-      let AppUser = new User()
-      AppUser({ googleId: profile.id }).save()
+      new User({ googleId: profile.id }).save()
     }
   )
 )
