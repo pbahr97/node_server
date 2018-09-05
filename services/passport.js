@@ -5,8 +5,16 @@ const keys = require('../config/keys')
 
 const User = mongoose.model('users')
 
+// serialize user with Passport to create an identifier
+// use from google strategy gets passed into the serializing after creation or returning
 passport.serializeUser((user, done) => {
   done(null, user.id)
+})
+// takes in the id that has been stuffed in the cookie and turn it back into an user model out of it
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user)
+  })
 })
 
 passport.use(
