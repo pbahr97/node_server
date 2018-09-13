@@ -1,14 +1,26 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const mongoose = require('mongoose')
+const cookieSession = require('cookie-session')
+const passport = require('passport')
+const keys = require('./config/keys')
+require('./models/User')
+require('./services/passport')
 
-//different Http methods: post, get, put, delete, patch
-//getting information about some particular record
-app.get('/', (req, res) => {
-  //arrow function gets called everytime the specific route is visited
-  res.send({ init: 'Hello World' });
-});
+mongoose.connect(keys.mongoURI)
 
-// '/' which route to listen to  eg: '/Home'
+const app = express()
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+// enabling cookies
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./routes/authRoutes')(app)
+
+const PORT = process.env.PORT || 5000
+app.listen(PORT)
